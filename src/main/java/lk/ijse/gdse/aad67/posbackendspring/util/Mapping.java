@@ -1,7 +1,7 @@
 package lk.ijse.gdse.aad67.posbackendspring.util;
 
 import lk.ijse.gdse.aad67.posbackendspring.dto.CustomerDTO;
-import lk.ijse.gdse.aad67.posbackendspring.entity.CustomerEntity;
+import lk.ijse.gdse.aad67.posbackendspring.entity.impl.CustomerEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
