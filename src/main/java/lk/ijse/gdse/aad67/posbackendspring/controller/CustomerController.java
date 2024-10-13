@@ -2,7 +2,7 @@ package lk.ijse.gdse.aad67.posbackendspring.controller;
 
 import lk.ijse.gdse.aad67.posbackendspring.dto.CustomerDTO;
 import lk.ijse.gdse.aad67.posbackendspring.exception.DataPersistException;
-import lk.ijse.gdse.aad67.posbackendspring.service.impl.CustomerServiceIMPL;
+import lk.ijse.gdse.aad67.posbackendspring.service.CustomerService;
 import lk.ijse.gdse.aad67.posbackendspring.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
     @Autowired
-    private CustomerServiceIMPL customerServiceIMPL;
+    private CustomerService customerService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveCustomer(
@@ -35,7 +35,7 @@ public class CustomerController {
             buildCustomerDTO.setName(name);
             buildCustomerDTO.setAddress(address);
             buildCustomerDTO.setSalary(salary);
-            customerServiceIMPL.saveCustomer(buildCustomerDTO);
+            customerService.saveCustomer(buildCustomerDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
 
         } catch (DataPersistException e) {
