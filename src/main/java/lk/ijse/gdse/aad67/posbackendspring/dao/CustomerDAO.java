@@ -1,6 +1,6 @@
 package lk.ijse.gdse.aad67.posbackendspring.dao;
 
-import lk.ijse.gdse.aad67.posbackendspring.entity.CustomerEntity;
+import lk.ijse.gdse.aad67.posbackendspring.entity.impl.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
