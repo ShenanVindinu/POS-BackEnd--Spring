@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,5 +36,15 @@ public class ItemServiceIMPL implements ItemService {
     @Override
     public List<ItemDTO> getAllItems() {
         return mapping.asItemDTOList(itemDAO.findAll());
+    }
+
+    @Override
+    public void deleteItemById(String itemId) {
+        Optional<ItemEntity> foundItem = itemDAO.findById(itemId);
+        if (foundItem.isEmpty()) {
+            throw new DataPersistException("Item not deleted");
+        } else {
+            itemDAO.deleteById(itemId);
+        }
     }
 }

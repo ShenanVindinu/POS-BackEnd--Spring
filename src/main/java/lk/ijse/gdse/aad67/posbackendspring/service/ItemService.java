@@ -9,4 +9,6 @@ public interface ItemService {
     void saveItems(ItemDTO item);
 
     List<ItemDTO> getAllItems();
+
+    void deleteItemById(String itemId);
 }
