@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class AppUtil {
     public static String generateCustomerId(){
-        return "NOTE-"+ UUID.randomUUID();
+        return "CUS-"+ UUID.randomUUID();
     }
     public static String generateItemId(){
         return "ITEM-"+UUID.randomUUID();
