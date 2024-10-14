@@ -23,7 +23,6 @@ public class ItemEntity implements SuperEntity {
     private String itemName;
     private String itemQTY;
     private String itemPrice;
-    private String itemTotal;
 
 
     @ManyToMany(mappedBy = "items")
