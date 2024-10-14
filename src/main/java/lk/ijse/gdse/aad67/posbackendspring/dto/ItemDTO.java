@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ItemDTO {
-    private String itemId;
-    private String itemName;
-    private String itemQTY;
-    private String itemPrice;
+    private String id;
+    private String name;
+    private String qty;
+    private String price;
 }
