@@ -11,6 +11,8 @@ import lk.ijse.gdse.aad67.posbackendspring.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CustomerServiceIMPL implements CustomerService {
@@ -28,5 +30,10 @@ public class CustomerServiceIMPL implements CustomerService {
         if (savedUser == null) {
             throw new DataPersistException("User not saved");
         }
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        return mapping.asCustomerDTOList(customerDAO.findAll());
     }
 }
