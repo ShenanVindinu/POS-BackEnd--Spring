@@ -38,7 +38,7 @@ public class ItemController {
     }
 
     @DeleteMapping(value = "/{itemId}")
-    public ResponseEntity<Void> deleteItem(@PathVariable String itemId) {
+    public ResponseEntity<Void> deleteItem(@PathVariable("itemId") String itemId) {
         try {
             itemService.deleteItemById(itemId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -50,4 +50,5 @@ public class ItemController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
