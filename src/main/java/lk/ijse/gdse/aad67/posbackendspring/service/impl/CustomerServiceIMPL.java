@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lk.ijse.gdse.aad67.posbackendspring.dao.CustomerDAO;
 import lk.ijse.gdse.aad67.posbackendspring.dto.CustomerDTO;
 import lk.ijse.gdse.aad67.posbackendspring.entity.impl.CustomerEntity;
+import lk.ijse.gdse.aad67.posbackendspring.exception.CustomerNotFoundException;
 import lk.ijse.gdse.aad67.posbackendspring.exception.DataPersistException;
 import lk.ijse.gdse.aad67.posbackendspring.service.CustomerService;
 import lk.ijse.gdse.aad67.posbackendspring.util.AppUtil;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,5 +37,27 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public List<CustomerDTO> getAllCustomers() {
         return mapping.asCustomerDTOList(customerDAO.findAll());
+    }
+
+    @Override
+    public void deleteCustomerById(String cusId) {
+        Optional<CustomerEntity> foundCustomer = customerDAO.findById(cusId);
+        if (foundCustomer.isEmpty()) {
+            throw new CustomerNotFoundException("Customer not found");
+        } else {
+            customerDAO.deleteById(cusId);
+        }
+    }
+
+    @Override
+    public void updateCustomerById(String cusId, CustomerDTO updatedCustomerDTO) {
+        Optional<CustomerEntity> foundCustomer = customerDAO.findById(cusId);
+        if (foundCustomer.isEmpty()) {
+            throw new CustomerNotFoundException("Customer not found");
+        } else {
+            foundCustomer.get().setName(updatedCustomerDTO.getName());
+            foundCustomer.get().setAddress(updatedCustomerDTO.getAddress());
+            foundCustomer.get().setSalary(updatedCustomerDTO.getSalary());
+        }
     }
 }
