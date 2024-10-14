@@ -4,6 +4,7 @@ import lk.ijse.gdse.aad67.posbackendspring.dto.ItemDTO;
 import lk.ijse.gdse.aad67.posbackendspring.exception.DataPersistException;
 import lk.ijse.gdse.aad67.posbackendspring.exception.ItemNotFoundException;
 import lk.ijse.gdse.aad67.posbackendspring.service.ItemService;
+import lk.ijse.gdse.aad67.posbackendspring.util.RegexProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,4 +52,24 @@ public class ItemController {
         }
     }
 
+    @PutMapping(value = "/{itemId}")
+    public ResponseEntity<Void> updateItem(
+            @PathVariable("itemId") String itemId,
+            @RequestBody ItemDTO updatedItem)
+    {
+        //validation
+        try {
+            if (!RegexProcess.itemIdMatcher(itemId) || updatedItem == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            itemService.updateItemById(itemId, updatedItem);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

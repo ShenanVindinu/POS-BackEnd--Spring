@@ -47,4 +47,16 @@ public class ItemServiceIMPL implements ItemService {
             itemDAO.deleteById(itemId);
         }
     }
+
+    @Override
+    public void updateItemById(String itemId, ItemDTO updatedItem) {
+        Optional<ItemEntity> foundItem = itemDAO.findById(itemId);
+        if (foundItem.isEmpty()) {
+            throw new DataPersistException("Item not updated");
+        } else {
+            foundItem.get().setItemName(updatedItem.getName());
+            foundItem.get().setItemQTY(updatedItem.getQty());
+            foundItem.get().setItemPrice(updatedItem.getPrice());
+        }
+    }
 }
