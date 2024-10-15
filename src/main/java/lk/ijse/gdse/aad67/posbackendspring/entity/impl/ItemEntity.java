@@ -18,8 +18,7 @@ import java.util.List;
 @Table(name = "item")
 public class ItemEntity implements SuperEntity {
     @Id
-    private String itemId;
-
+    private String id;
     private String itemName;
     private String itemQTY;
     private String itemPrice;
