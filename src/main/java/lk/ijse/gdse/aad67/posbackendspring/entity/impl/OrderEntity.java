@@ -20,7 +20,7 @@ public class OrderEntity implements SuperEntity {
     @Column(nullable = false, unique = true)
     private String orderId;
 
-    private LocalDate orderDate;
+    private String orderDate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
