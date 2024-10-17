@@ -56,18 +56,4 @@ public class Mapping {
 
         return orderEntity;
     }
-
-
-    public List<OrderItemEntity> toOrderItemEntities(List<OrderItemDTO> itemDTOs, OrderEntity orderEntity) {
-
-        List<OrderItemEntity> orderItemEntities = itemDTOs.stream()
-                .map(itemDTO -> {
-                    OrderItemEntity orderItemEntity = modelMapper.map(itemDTO, OrderItemEntity.class);
-                    orderItemEntity.setOrder(orderEntity);
-                    return orderItemEntity;
-                })
-                .collect(Collectors.toList());
-
-        return orderItemEntities;
-    }
 }

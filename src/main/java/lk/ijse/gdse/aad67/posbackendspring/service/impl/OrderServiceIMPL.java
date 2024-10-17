@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,15 +40,34 @@ public class OrderServiceIMPL implements OrderService {
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
 
-        OrderEntity orderEntity = mapping.toOrderEntityWithCustomer(orderDTO, customer);
+        // Create a new OrderEntity object
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderId(orderDTO.getId());
+        orderEntity.setOrderDate(orderDTO.getOrderDate());
+        orderEntity.setCustomer(customer);
+        orderEntity.setCustomerName(orderDTO.getCustomerName());
+        orderEntity.setCustomerSalary(orderDTO.getCustomerSalary());
+        orderEntity.setCustomerAddress(orderDTO.getCustomerAddress());
 
 
-        List<OrderItemEntity> orderItemEntities = mapping.toOrderItemEntities(orderDTO.getOrderItems(), orderEntity);
+        // Manually create OrderItemEntities and map them directly
+        List<OrderItemEntity> orderItemEntities = orderDTO.getOrderItems().stream()
+                .map(itemDTO -> {
+                    OrderItemEntity orderItemEntity = new OrderItemEntity();
+                    orderItemEntity.setItemId(itemDTO.getItemId());
+                    orderItemEntity.setItemName(itemDTO.getItemName());
+                    orderItemEntity.setItemPrice(itemDTO.getItemPrice()); // Assuming price is a String
+                    orderItemEntity.setOrderQTY(itemDTO.getOrderQTY()); // Assuming quantity is a String
+                    orderItemEntity.setTotal(itemDTO.getTotal()); // Assuming total is a String
+                    orderItemEntity.setOrder(orderEntity); // Set the relationship with the order
+                    return orderItemEntity;
+                })
+                .collect(Collectors.toList());
 
-
+        // Set the order items to the order entity
         orderEntity.setOrderItems(orderItemEntities);
 
-
+        // Save the order entity
         orderDAO.save(orderEntity);
     }
 
