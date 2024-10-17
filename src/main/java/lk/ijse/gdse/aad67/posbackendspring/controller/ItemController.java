@@ -55,8 +55,7 @@ public class ItemController {
     @PutMapping(value = "/{itemId}")
     public ResponseEntity<Void> updateItem(
             @PathVariable("itemId") String itemId,
-            @RequestBody ItemDTO updatedItem)
-    {
+            @RequestBody ItemDTO updatedItem) {
         //validation
         try {
             if (!RegexProcess.itemIdMatcher(itemId) || updatedItem == null) {

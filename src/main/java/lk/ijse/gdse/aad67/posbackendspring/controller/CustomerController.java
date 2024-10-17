@@ -58,14 +58,13 @@ public class CustomerController {
     @PutMapping(value = "/{cusId}")
     public ResponseEntity<Void> updateCustomer(
             @PathVariable("cusId") String cusId,
-            @RequestBody CustomerDTO updatedCustomerDTO)
-    {
+            @RequestBody CustomerDTO updatedCustomerDTO) {
         //validation
         try {
             if (!RegexProcess.cusIdMatcher(cusId) || updatedCustomerDTO == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            customerService.updateCustomerById(cusId,updatedCustomerDTO);
+            customerService.updateCustomerById(cusId, updatedCustomerDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (CustomerNotFoundException e) {
             e.printStackTrace();
