@@ -9,6 +9,8 @@ import lk.ijse.gdse.aad67.posbackendspring.exception.DataPersistException;
 import lk.ijse.gdse.aad67.posbackendspring.service.CustomerService;
 import lk.ijse.gdse.aad67.posbackendspring.util.AppUtil;
 import lk.ijse.gdse.aad67.posbackendspring.util.Mapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CustomerServiceIMPL implements CustomerService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomerServiceIMPL.class);
+
     @Autowired
     private Mapping mapping;
 
@@ -30,12 +35,14 @@ public class CustomerServiceIMPL implements CustomerService {
         CustomerEntity savedUser =
                 customerDAO.save(mapping.toCustomerEntity(customerDTO));
         if (savedUser == null) {
-            throw new DataPersistException("User not saved");
+            logger.error("Customer not Saved");
+            throw new DataPersistException("Customer not saved");
         }
     }
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
+        logger.info("getAllCustomers called");
         return mapping.asCustomerDTOList(customerDAO.findAll());
     }
 
@@ -43,6 +50,7 @@ public class CustomerServiceIMPL implements CustomerService {
     public void deleteCustomerById(String cusId) {
         Optional<CustomerEntity> foundCustomer = customerDAO.findById(cusId);
         if (foundCustomer.isEmpty()) {
+            logger.error("Customer not Found");
             throw new CustomerNotFoundException("Customer not found");
         } else {
             customerDAO.deleteById(cusId);
@@ -53,6 +61,7 @@ public class CustomerServiceIMPL implements CustomerService {
     public void updateCustomerById(String cusId, CustomerDTO updatedCustomerDTO) {
         Optional<CustomerEntity> foundCustomer = customerDAO.findById(cusId);
         if (foundCustomer.isEmpty()) {
+            logger.error("Customer not Found");
             throw new CustomerNotFoundException("Customer not found");
         } else {
             foundCustomer.get().setName(updatedCustomerDTO.getName());

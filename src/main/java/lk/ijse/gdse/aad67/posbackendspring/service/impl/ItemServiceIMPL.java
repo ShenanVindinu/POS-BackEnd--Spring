@@ -8,6 +8,8 @@ import lk.ijse.gdse.aad67.posbackendspring.exception.DataPersistException;
 import lk.ijse.gdse.aad67.posbackendspring.service.ItemService;
 import lk.ijse.gdse.aad67.posbackendspring.util.AppUtil;
 import lk.ijse.gdse.aad67.posbackendspring.util.Mapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ItemServiceIMPL implements ItemService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
+
     @Autowired
     private Mapping mapping;
 
@@ -29,6 +34,7 @@ public class ItemServiceIMPL implements ItemService {
         item.setId(AppUtil.generateItemId());
         ItemEntity savedItem = itemDAO.save(mapping.toItemEntity(item));
         if (savedItem == null) {
+            logger.error("Item not saved");
             throw new DataPersistException("Item not saved");
         }
     }
@@ -42,6 +48,7 @@ public class ItemServiceIMPL implements ItemService {
     public void deleteItemById(String itemId) {
         Optional<ItemEntity> foundItem = itemDAO.findById(itemId);
         if (foundItem.isEmpty()) {
+            logger.error("Item not deleted");
             throw new DataPersistException("Item not deleted");
         } else {
             itemDAO.deleteById(itemId);
@@ -52,6 +59,7 @@ public class ItemServiceIMPL implements ItemService {
     public void updateItemById(String itemId, ItemDTO updatedItem) {
         Optional<ItemEntity> foundItem = itemDAO.findById(itemId);
         if (foundItem.isEmpty()) {
+            logger.error("Item not updated");
             throw new DataPersistException("Item not updated");
         } else {
             foundItem.get().setItemName(updatedItem.getName());
